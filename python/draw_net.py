@@ -8,6 +8,7 @@ from google.protobuf import text_format
 import caffe
 import caffe.draw
 from caffe.proto import caffe_pb2
+import os
 
 
 def parse_args():
@@ -19,8 +20,6 @@ def parse_args():
 
     parser.add_argument('input_net_proto_file',
                         help='Input network prototxt file')
-    parser.add_argument('output_image_file',
-                        help='Output image file')
     parser.add_argument('--rankdir',
                         help=('One of TB (top-bottom, i.e., vertical), '
                               'RL (right-left, i.e., horizontal), or another '
@@ -35,6 +34,7 @@ def parse_args():
                         default="ALL")
 
     args = parser.parse_args()
+    args.output_image_file = os.path.splitext(args.input_net_proto_file)[0] + ".dot"
     return args
 
 

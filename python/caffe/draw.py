@@ -22,12 +22,15 @@ except ImportError:
     import pydot
 
 # Internal layer and blob styles.
+# Blue
 LAYER_STYLE_DEFAULT = {'shape': 'record',
                        'fillcolor': '#6495ED',
                        'style': 'filled'}
+# Green
 NEURON_LAYER_STYLE = {'shape': 'record',
                       'fillcolor': '#90EE90',
                       'style': 'filled'}
+# Grey
 BLOB_STYLE = {'shape': 'octagon',
               'fillcolor': '#E0E0E0',
               'style': 'filled'}
@@ -117,12 +120,16 @@ def get_layer_label(layer, rankdir):
 def choose_color_by_layertype(layertype):
     """Define colors for nodes based on the layer type.
     """
+    # Blue
     color = '#6495ED'  # Default
     if layertype == 'Convolution' or layertype == 'Deconvolution':
+        # Red
         color = '#FF5050'
     elif layertype == 'Pooling':
+        # Orange
         color = '#FF9900'
     elif layertype == 'InnerProduct':
+        # Purple
         color = '#CC33FF'
     return color
 

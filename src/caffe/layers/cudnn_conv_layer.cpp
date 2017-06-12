@@ -18,6 +18,9 @@ template <typename Dtype>
 void CuDNNConvolutionLayer<Dtype>::LayerSetUp(
     const vector<Blob<Dtype>*>& bottom, const vector<Blob<Dtype>*>& top) {
   ConvolutionLayer<Dtype>::LayerSetUp(bottom, top);
+  if (Caffe::mode() == Caffe::CPU)
+      return;
+
   // Initialize algorithm arrays
   fwd_algo_       = new cudnnConvolutionFwdAlgo_t[bottom.size()];
   bwd_filter_algo_= new cudnnConvolutionBwdFilterAlgo_t[bottom.size()];
@@ -115,6 +118,12 @@ size_t CuDNNConvolutionLayer<Dtype>::ComputeFindExWorkspaceSize() {
 template <typename Dtype>
 void CuDNNConvolutionLayer<Dtype>::Reshape(
     const vector<Blob<Dtype>*>& bottom, const vector<Blob<Dtype>*>& top) {
+  if (Caffe::mode() == Caffe::CPU)
+  {
+      ConvolutionLayer<Dtype>::Reshape(bottom, top);
+      return;
+  }
+
   // Check whether cached descriptors have been initialized.
   if (initialized_cached_descs_) {
     // Check whether bottom and conv descriptors have changed,
@@ -487,6 +496,10 @@ void CuDNNConvolutionLayer<Dtype>::UpdateWorkspaceDemand(int size) {
 
 template <typename Dtype>
 CuDNNConvolutionLayer<Dtype>::~CuDNNConvolutionLayer() {
+
+  if (Caffe::mode() == Caffe::CPU)
+      return;
+
   WORKSPACE.release();
   // Check that handles have been setup before destroying.
   if (!handles_setup_) { return; }

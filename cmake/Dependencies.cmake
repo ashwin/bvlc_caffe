@@ -186,7 +186,7 @@ else()
 endif()
 if(NCCL_FOUND)
   add_definitions(-DUSE_NCCL)
-  include_directories(SYSTEM ${NCCL_INCLUDE})
+  include_directories(SYSTEM ${NCCL_INCLUDE_DIR})
   list(APPEND Caffe_LINKER_LIBS ${NCCL_LIBRARY})
 endif()
 
